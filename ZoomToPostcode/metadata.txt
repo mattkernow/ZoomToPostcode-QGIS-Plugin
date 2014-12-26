@@ -28,7 +28,7 @@ tags=postcode, opendata, os
 
 homepage=
 tracker=
-repository=https://github.com/mattkernow/ZoomToPostcode
+repository=https://github.com/mattkernow/ZoomToPostcode-QGIS-Plugin
 icon=zoomicon.png
 # experimental flag
 experimental=False
