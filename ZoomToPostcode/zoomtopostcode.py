@@ -34,6 +34,8 @@ import pickle
 import urllib2
 import zipfile
 import tempfile
+import datetime
+import xml.etree.ElementTree as ET
 
 
 class ZoomToPostcode:
@@ -122,9 +124,18 @@ class ZoomToPostcode:
 
     def check_pkl(self):
         # Check the Pickle postcode dir exists
-        checkpkl = os.path.isdir(os.path.join(os.path.dirname(__file__), 'UK_Postcodes'))
+        checkpkl = os.path.isdir(os.path.join(self.plugin_dir, 'UK_Postcodes'))
         if checkpkl:
-            self.postcode_dict()
+            xml_path = os.path.join(self.plugin_dir, r'UK_Postcodes/metadata.xml')
+            check_xml = os.path.isfile(xml_path)
+            if check_xml:
+                check_currency = self.check_pcode_date(xml_path)
+                if check_currency:
+                    self.postcode_dict()
+                else:
+                    self.update_pcode_option()
+            else:
+                self.update_pcode_option()
         else:
             msg = "Postcode files must be downloaded to use this plugin, do you wish to continue?"
             goahead = QMessageBox.question(self.iface.mainWindow(), "Download Message", msg, QMessageBox.Yes, QMessageBox.No)
@@ -132,6 +143,39 @@ class ZoomToPostcode:
                 self.download_pkl()
             else:
                 pass
+
+    def check_pcode_date(self, xml_path):
+        # Parses metadata xml to check currency of pcodes
+        url = "http://qgis.locationcentre.co.uk/ZoomToPostcode_medata.xml"
+        request = urllib2.Request(url)
+        u = urllib2.urlopen(request)
+        tree_web = ET.parse(u)
+        root_web = tree_web.getroot()
+        current_version = ""
+        for child in root_web:
+            if child.tag == "pcode_date":
+                current_version = child.text
+        tree_plugin = ET.parse(xml_path)
+        root_plugin = tree_plugin.getroot()
+        last_update = ""
+        for child in root_plugin:
+            if child.tag == "pcode_date":
+                last_update = child.text
+        last_up_datetime = datetime.datetime.strptime(last_update, '%Y-%m-%d')
+        curr_ver_datetime = datetime.datetime.strptime(current_version, '%Y-%m-%d')
+        if last_up_datetime.date() >= curr_ver_datetime.date():
+            return True  # Return True for up-to-date pcodes
+        else:
+            return False  # False requires download to update
+
+    def update_pcode_option(self):
+        # Provide option to update postcodes
+        msg = "Updated postcode files are available, do you wish to download?"
+        goahead = QMessageBox.question(self.iface.mainWindow(), "Download Message", msg, QMessageBox.Yes, QMessageBox.No)
+        if goahead == QMessageBox.Yes:
+            self.download_pkl()
+        if goahead == QMessageBox.No:
+            self.postcode_dict()
 
     def download_pkl(self):
         # Download the Pickle postcode file to the plugin dir
