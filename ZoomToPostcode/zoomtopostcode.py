@@ -138,7 +138,7 @@ class ZoomToPostcode:
         pcode_path = os.path.join(os.path.dirname(__file__), 'UK_Postcodes')
         if not os.path.exists(pcode_path):
             os.makedirs(pcode_path)
-        url = "http://www.miningsearchesuk.com/assets/file/UK_Postcodes.zip"
+        url = "http://qgis.locationcentre.co.uk/UK_Postcodes.zip"
         os.umask(0002)
         try:
             req = urllib2.urlopen(url)
