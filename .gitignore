@@ -41,3 +41,12 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# =========================
+# Project Specific Files
+# =========================
+
+# PyCharm folder
+/.idea
+
+.pyc
