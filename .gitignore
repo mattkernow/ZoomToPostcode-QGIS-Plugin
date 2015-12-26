@@ -49,4 +49,8 @@ Temporary Items
 # PyCharm folder
 /.idea
 
+# Compiled Python files
 .pyc
+
+# Development csv folder
+CSV
