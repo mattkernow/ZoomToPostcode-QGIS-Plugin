@@ -2,12 +2,10 @@ from os import path, listdir
 from geojson import crs, Point, FeatureCollection, Feature, dump, is_valid
 import csv
 
-__author__ = 'Matt'
-
 
 class CsvToJson(object):
     """
-    Parse OS Code Point Open CSV files to create GeoJson files.
+    Parse OS Code Point Open CSV files to create GeoJson files. Place this script in the same dir as the CSV's.
     """
     def __init__(self):
         """
@@ -53,13 +51,13 @@ class CsvToJson(object):
             reader = csv.reader(f)
             for row in reader:
                 postcode = str(row[0]).replace(' ', '')
-                easting = float(row[2])
-                northing = float(row[3])
+                easting = int(row[2])
+                northing = int(row[3])
                 point = Point(coordinates=(easting, northing))
                 feature = Feature(geometry=point, properties={'postcode': postcode})
                 all_features.append(feature)
         # Set CRS to BNG
-        coord_ref = crs.Named(properties={'name': 'EPSG:27700'})
+        coord_ref = crs.Named(properties={'name': 'urn:ogc:def:crs:EPSG::27700'})
         feature_collection = FeatureCollection(all_features, crs=coord_ref)
         return feature_collection
 
@@ -71,7 +69,7 @@ class CsvToJson(object):
         """
         clean_name = str(path.splitext(csv_f)[0]) + ".json"
         with open(path.join(self.uk_postcodes, clean_name), "wb") as json_outfile:
-            dump([feature_collection], json_outfile)
+            dump(feature_collection, json_outfile)
 
 run = CsvToJson()
 run.csv_to_json()
