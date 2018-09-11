@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/plugins/zoomtopostcode">
-        <file>zoomicon.png</file>
-    </qresource>
-</RCC>

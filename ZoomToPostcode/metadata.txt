@@ -1,41 +1,41 @@
-# This file contains metadata for your plugin. Beginning
-# with version 1.8 this is the preferred way to supply information about a
-# plugin. The current method of embedding metadata in __init__.py will
-# be supported until version 2.0
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
 
-# This file should be included when you package your plugin.
-
-# Mandatory items:
-
+# This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Zoom to Postcode
-qgisMinimumVersion=2.0
+name=Zoom To Postcode
+qgisMinimumVersion=3.0
 description=Zoom the map extent to a UK postcode
-version=0.5
-author=Matthew Walsh
-email=walsh.gis@gmail.com
+version=1.1
 
-# end of mandatory metadata
+about=Zoom the map canvas to a UK postcode.
 
-# Optional items:
-
-# Uncomment the following line and add your changelog entries:
-changelog=
-	0.5 - Changed dialog for toolbar
-	Postcode are automatically updated once available
-	vertex marker bug fix
-
-# tags are comma separated with spaces allowed
-tags=postcode, opendata, os
-
-homepage=
-tracker=
+tracker=https://github.com/mattkernow/ZoomToPostcode-QGIS-Plugin/issues
 repository=https://github.com/mattkernow/ZoomToPostcode-QGIS-Plugin
+# End of mandatory metadata
+
+# Recommended items:
+
+#changelog=
+#	0.5 - Changed dialog for toolbar
+#	Postcode are automatically updated once available
+#	vertex marker bug fix
+
+# Tags are comma separated with spaces allowed
+tags=python, zoom, postcode, uk
+
+homepage=https://github.com/mattkernow/ZoomToPostcode-QGIS-Plugin
+category=Plugins
 icon=zoomicon.png
 # experimental flag
 experimental=False
 
-# deprecated flag (applies to the whole plugin, not just a single version
+# deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
 
+author=Matthew Walsh
+email=walsh.gis@gmail.com
