@@ -10,7 +10,7 @@
 name=Zoom To Postcode
 qgisMinimumVersion=3.0
 description=Zoom the map extent to a UK postcode
-version=1.1
+version=1.0
 
 about=Zoom the map canvas to a UK postcode.
 
