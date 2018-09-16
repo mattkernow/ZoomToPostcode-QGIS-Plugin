@@ -2,6 +2,9 @@
 Thumbs.db
 ehthumbs.db
 
+UK_Postcodes/
+__pycache__/
+
 # Folder config file
 Desktop.ini
 
