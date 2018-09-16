@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -17,8 +17,10 @@ except AttributeError:
 
 try:
     _encoding = QtWidgets.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
+
 except AttributeError:
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig)
@@ -47,5 +49,6 @@ class Ui_ZoomToPostcode(object):
 
     def retranslateUi(self, ZoomToPostcode):
         ZoomToPostcode.setWindowTitle(_translate("ZoomToPostcode", "OS Licence", None))
-        self.label_2.setText(_translate("ZoomToPostcode", "<html><head/><body><p><span style=\" font-size:7pt;\">Contains Ordnance Survey data (C) Crown copyright and database right 2015</span></p><p><span style=\" font-size:7pt;\">Contains Royal Mail data (C) Royal Mail copyright and database right 2015</span></p><p><span style=\" font-size:7pt;\">Contains National Statistics data (C) Crown copyright and database right 2015</span></p></body></html>", None))
-
+        self.label_2.setText(_translate("ZoomToPostcode",
+                                        "<html><head/><body><p><span style=\" font-size:7pt;\">Contains Ordnance Survey data (C) Crown copyright and database right 2015</span></p><p><span style=\" font-size:7pt;\">Contains Royal Mail data (C) Royal Mail copyright and database right 2015</span></p><p><span style=\" font-size:7pt;\">Contains National Statistics data (C) Crown copyright and database right 2015</span></p></body></html>",
+                                        None))

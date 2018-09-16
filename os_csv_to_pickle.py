@@ -1,6 +1,6 @@
 """
 ###################################################################
-OsCsvToPickle.py - A script to create postcode pickle files from OS
+os_csv_to_pickle.py - A script to create postcode pickle files from OS
 Codepoint openData.
 Place script in same directory as CSV's and run. A new folder with
 the pickes files will be created within the same directory.

@@ -45,6 +45,9 @@ ssl._create_default_https_context = ssl._create_unverified_context
 class ZoomToPostcode:
     """QGIS Plugin Implementation."""
 
+    METADATA_URL = "http://qgis.locationcentre.co.uk/ZoomToPostcode_medata.xml"
+    POSTCODE_URL = "http://qgis.locationcentre.co.uk/UK_Postcodes.zip"
+
     def __init__(self, iface):
         """Constructor.
 
@@ -199,24 +202,33 @@ class ZoomToPostcode:
         self.completer.setCaseSensitivity(Qt.CaseInsensitive)
 
     def check_crs(self):
-        # Check if a transformation needs to take place
+        """Check if a transformation needs to take place.
+
+        :return: None
+        """
         srs = self.canvas.mapSettings().destinationCrs()
         current_crs = srs.authid()
         return current_crs
 
     def transform(self, cor):
-        # Transforms point from british nation grid to map crs
+        """Transforms point from british nation grid to map crs.
+
+        :param cor: Coords
+        :return: Point
+        """
         srs = self.canvas.mapSettings().destinationCrs()
         crs_src = QgsCoordinateReferenceSystem(27700)
         crs_dest = QgsCoordinateReferenceSystem(srs)
         xform = QgsCoordinateTransform(crs_src, crs_dest, QgsProject.instance())
-        x = float(cor[0])
-        y = float(cor[1])
-        t_point = xform.transform(x, y)
+        x, y = cor
+        t_point = xform.transform(float(x), float(y))
         return t_point
 
     def check_pkl(self):
-        # Check the Pickle postcode dir exists
+        """Check the Pickle postcode dir exists.
+
+        :return: None
+        """
         checkpkl = path.isdir(path.join(self.plugin_dir, 'UK_Postcodes'))
         if checkpkl:
             xml_path = path.join(self.plugin_dir, r'UK_Postcodes/metadata.xml')
@@ -241,13 +253,13 @@ class ZoomToPostcode:
     def check_pcode_date(self, xml_path):
         """Parses metadata xml to check currency of pcodes.
 
-        :param xml_path:
-        :return:
+        :param xml_path: Full path to xml file.
+        :return: True for up-to-date postcodes, False requires download to update
         """
         try:
-            url = "http://qgis.locationcentre.co.uk/ZoomToPostcode_medata.xml"
+
             http = urllib3.PoolManager()
-            r = http.request('GET', url)
+            r = http.request('GET', self.METADATA_URL, retries=3)
 
             xml_as_string = ET.fromstring(r.data.decode('utf-8'))
             tree_web = ET.ElementTree(xml_as_string)
@@ -265,10 +277,8 @@ class ZoomToPostcode:
             last_up_datetime = datetime.strptime(last_update, '%Y-%m-%d')
             curr_ver_datetime = datetime.strptime(current_version, '%Y-%m-%d')
             if last_up_datetime.date() >= curr_ver_datetime.date():
-                # Return True for up-to-date postcodes
                 return True
             else:
-                # False requires download to update
                 return False
 
         except urllib3.exceptions.MaxRetryError:
@@ -299,9 +309,8 @@ class ZoomToPostcode:
             makedirs(pcode_path)
 
         try:
-            url = "http://qgis.locationcentre.co.uk/UK_Postcodes.zip"
             http = urllib3.PoolManager()
-            response = http.request('GET', url, preload_content=False)
+            response = http.request('GET', self.POSTCODE_URL, preload_content=False, retries=3)
             content_length = response.headers['Content-Length']
             total_size = int(content_length)
             downloaded = 0
